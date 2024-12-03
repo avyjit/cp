@@ -9,7 +9,7 @@ function compile_and_run {
     rm $executable  # Remove the executable if it exists
     
     # Compile the source file
-    g++ -std=c++17 -fsanitize=undefined -fsanitize=address "cpp/cp${num}.cpp" -o "$executable" &> "outputs/output${num}.log"
+    g++ -std=c++17 -fsanitize=undefined -fsanitize=address -DLOCAL "cpp/cp${num}.cpp" -o "$executable" &> "outputs/output${num}.log"
 
     # Run only if compilation was successful
     if [ -f "$executable" ]; then

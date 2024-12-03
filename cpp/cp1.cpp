@@ -1,6 +1,6 @@
-#pragma GCC optimize("Ofast")
+#pragma GCC optimize("O3")
 #pragma GCC optimize ("unroll-loops")
-#pragma GCC target("sse,sse2,sse3,ssse3,sse4,popcnt,abm,mmx,avx,tune=native")
+//#pragma GCC target("sse,sse2,sse3,ssse3,sse4,popcnt,abm,mmx,avx")
 
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>  
@@ -8,8 +8,12 @@
 using namespace std;
 using namespace __gnu_pbds;
 
+/* --- <SNIPPET> --- */
+
+/* --- </SNIPPET> --- */
+
 //#define MOD ((ll)(1e9 + 7))
-// #define MOD 998244353
+#define MOD 998244353
 using ll = long long;
 using ull = unsigned long long;
 typedef vector<ll> vll;
@@ -18,6 +22,7 @@ typedef vector<ull> vull;
 typedef pair<ll, ll> pll;
 
 
+/* --- some std helpers --- */
 struct custom_hash {
     static uint64_t splitmix64(uint64_t x) {
         // http://xorshift.di.unimi.it/splitmix64.c
@@ -32,6 +37,13 @@ struct custom_hash {
         return splitmix64(x + FIXED_RANDOM);
     }
 };
+
+template <typename X, typename Y>
+std::ostream& operator << ( std::ostream & os, pair<X, Y> const &p)
+{ 
+   return os << '[' << p.first << ',' << p.second << ']'; 
+}
+/* ------ */
 
 
 template<class T, class U> inline bool chmin(T& a, const U& b) { if (a > b) { a = b; return true; } return false; }
@@ -62,8 +74,15 @@ using oset = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node
 #define each(x, a) for (auto &x : a)
 template <typename T> void print(T v) { cout << v << endl; }
 template <typename T> void print(vector<T> v) { each(x, v) cout << x << " "; cout << endl; }
-#define dbg(...) fprintf(stderr, __VA_ARGS__)
+template <typename T> void print(vector<vector<T>> v) { each (r, v) print(r); }
 
+#ifdef LOCAL
+    #define dbg(...) fprintf(stderr, __VA_ARGS__)
+#else
+    #define dbg(...)
+#endif
+
+/* -- COMMON UTILITIES -- */
 ll binpow(ll a, ll b, ll m) {
     a %= m;
     ll res = 1;
@@ -76,76 +95,30 @@ ll binpow(ll a, ll b, ll m) {
     return res;
 }
 
-ll isprime(ll n) {
-    if (n < 2) return 0;
-    for (ll i = 2; i*i <= n; ++i) {
-        if (n % i == 0) return 0;
+class PrefixSum {
+    vll psum;
+public:
+    PrefixSum(vll &a) {
+        psum.resize(a.size());
+        partial_sum(all(a), psum.begin());
     }
-    return 1;
-}
+    ll query(ll l, ll r) {
+        if (l > r) return 0;
+        return psum[r] - (l > 0 ? psum[l-1] : 0);
+    }
+};
+/* -- END -- */
+
 
 void solve() {
-    ll n, m, k;
-    cin >> n >> m >> k;
-
-    vll a(n), b(m); each(x, a) cin >> x; each(x, b) cin >> x;
-
-    auto getgroup = [](vll &v) -> vll {
-        ll grp = 0;
-        vll res;
-
-        each (x, v) {
-            if (x == 1) grp++;
-            else {
-                if (grp != 0) res.pb(grp);
-                grp = 0;
-            }
-        }
-
-        if (grp != 0) 
-            res.pb(grp);
-        
-        sort(all(res));
-        return res;
-    };
-
-    auto ag = getgroup(a);
-    auto bg = getgroup(b);
-
-
-
-    vll agp, bgp; 
-    partial_sum(all(ag), back_inserter(agp)); 
-    partial_sum(all(bg), back_inserter(bgp));
-
-    auto nsubarrs = [&](vll &g, vll &gp, ll k) -> ll {
-        if (g.empty()) return 0; 
-        ll idx = lower_bound(all(g), k) - g.begin(); 
-
-
-        ll vsum = gp.back() - (idx == 0 ? 0 : gp[idx-1]);
-
-        return vsum - (k-1)*(g.size() - idx); 
-    }; 
-
-
-    ll ans = 0;
-
-    for (ll x = 1; x*x <= k; ++x) {
-        if (k % x == 0) {
-            ans += nsubarrs(ag, agp, x) * nsubarrs(bg, bgp, k/x);
-            if (x*x != k) {
-                ans += nsubarrs(ag, agp, k/x) * nsubarrs(bg, bgp, x);
-            }  
-        }
-    }
-
-    print(ans); 
-
+    
 }
+
 signed main() {
+#ifndef LOCAL
   ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
-  ll t = 1;
+#endif
+  ll t; cin >> t;
   while (t--) {
     solve();
   }
