@@ -16,7 +16,10 @@
         "utility": "cpp",
         "variant": "cpp",
         "bitset": "cpp",
-        "algorithm": "cpp"
+        "algorithm": "cpp",
+        "typeindex": "cpp",
+        "typeinfo": "cpp",
+        "span": "cpp"
     },
     "C_Cpp.default.cppStandard": "c++17",
 }

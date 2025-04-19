@@ -3,7 +3,7 @@ from collections import *
 
 t = int(input())
 
-def solve():
+def solve(a):
     ...
 
 for _ in range(t):

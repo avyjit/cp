@@ -83,6 +83,40 @@ template <typename T> void print(vector<vector<T>> v) { each (r, v) print(r); }
 #endif
 
 /* -- COMMON UTILITIES -- */
+template <typename F>
+pair<ll, bool> first_true(ll l, ll r, F check) {
+    ll lo = l, hi = r + 1;
+
+    while (lo < hi) {
+        ll mid = lo + (hi - lo) / 2;
+
+        if (check(mid)) {
+            hi = mid;
+        } else {
+            lo = mid + 1;
+        }
+    }
+
+    if (l <= lo && lo <= r) {
+        return {lo, true};
+    } else {
+        return {lo, false};
+    }
+}
+
+template <typename F>
+pair<ll, bool> last_true(ll l, ll r, F check) {
+    auto [res, found] = first_true(l, r, [&](ll x) { return !check(x); });
+
+    auto actual = res - 1;
+
+    if (l <= actual && actual <= r) {
+        return {actual, true};
+    } else {
+        return {actual, false};
+    }
+}
+
 ll binpow(ll a, ll b, ll m) {
     a %= m;
     ll res = 1;
@@ -118,7 +152,9 @@ signed main() {
 #ifndef LOCAL
   ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
 #endif
-  ll t; cin >> t;
+  ll t = 1;
+  cin >> t;
+
   while (t--) {
     solve();
   }

@@ -1,9 +1,10 @@
+from math import *
+from collections import *
+
 t = int(input())
 
+def solve(a):
+    ...
+
 for _ in range(t):
-    n = int(input())
-    s = input()
-
-    nums = [1 if x == '+' else -1 for x in s]
-
-    print(abs(sum(nums)))
+    ...
